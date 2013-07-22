@@ -1,4 +1,3 @@
-
 def loadFile(filename="file.txt", raw= False):
 	""" Returns file content , 
 		raw : returns a string with all data of the file

@@ -7,6 +7,7 @@ from optparse import OptionParser
 
 'Importing from our custom modules (namespaces)'
 import IODATA.HANDLERS as readers 
+import ALGORITHMS.solvers as solvers
 
 
 def Parser():
@@ -50,7 +51,6 @@ def main():
     listFile = readers.loadFile(options.filename)
     stringFile = readers.loadFile(options.filename, raw=True)
 
-    print "CURRENT LIST {0}".format(listFile)
     Word2Search = options.word.lower()
     """ Basic handling """
     while True:
@@ -61,6 +61,8 @@ def main():
         else:
             """<<<<<<<<< here goes your solution 
             >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"""
+            similars = solvers.searchSimilarWords(Word2Search, listFile)
+            print "Found @ {0} \n".format(similars)
             
         print "*) What to exit, press Y:"
         decision = raw_input().lower()
