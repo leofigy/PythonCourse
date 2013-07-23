@@ -7,4 +7,4 @@ Readme
    	--->HANDLERS.py : Functions to load data
 *) ALGORITHMS 
 	--->solvers.py : solutions to practices
-*)  
+*) basicModules : system modules and command wrappers
