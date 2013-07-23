@@ -1,4 +1,4 @@
-PythonCinvestav
+Python Practices 
 ===============
 Monday
 
