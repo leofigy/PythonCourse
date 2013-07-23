@@ -1,0 +1,10 @@
+Readme
+
+*) FirstApp.py : First Homework exercise 
+*) dataStructures.py : Introduction about python datastructures.
+*) Functional : Basic functional programming concepts in Python
+*) IODATA
+   	--->HANDLERS.py : Functions to load data
+*) ALGORITHMS 
+	--->solvers.py : solutions to practices
+*)  
