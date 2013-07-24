@@ -19,3 +19,11 @@ see https://github.com/leofigy/PythonCinvestav/wiki/OpenDrop
 Auf wiedersehen !!! Angel. 
 
 ---------------
+Wednesday
+
+OpenDrop folder added and a small class to do the folder monitor,
+review client.py file.
+
+Good night !!!
+
+Bis morgen !! Angel. 
