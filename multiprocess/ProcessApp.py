@@ -12,7 +12,6 @@ import time
 class Command(object):
     @staticmethod
     def execute(command="cd"):
-        print "here we are"
         process = Popen(command, shell=True, stdout=PIPE, stderr=PIPE)
         (std_output, std_error) = process.communicate()
         return_code = process.returncode
@@ -36,7 +35,7 @@ def Handler(queue=None, interval=3):
 
     while True:
         [code, std, error] = queue.get()
-        print "Recepcion :{0} code :{1}".format(std, code)
+        print "####### Current Files: \n {0} \n ##########code :{1}".format(std, code)
         time.sleep(interval)
 
 
