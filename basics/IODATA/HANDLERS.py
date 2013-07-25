@@ -6,8 +6,8 @@ class Command(object):
     @staticmethod
     def execute(command="cd"):
         process = Popen(command, shell=True, stdout=PIPE, stderr=PIPE)
-        return_code = process.returncode
         (std_output, std_error) = process.communicate()
+        return_code = process.returncode
 
         return return_code, std_output, std_error
 
