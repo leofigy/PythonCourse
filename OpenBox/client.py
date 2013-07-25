@@ -44,6 +44,7 @@ class client(object):
     def getDictionary(self):
         files = self.getFiles()
         dictionary = {}
+        fileAndHashes = []
         if files:
             fileAndHashes = [(filex, self.getChecksum(filex)) for filex in files]
         dictionary = dict(fileAndHashes)
