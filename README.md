@@ -27,3 +27,9 @@ review client.py file.
 Good night !!!
 
 Bis morgen !! Angel. 
+--------------
+Tuesday
+
+Multiprocess application added to client.py.
+
+Tomorrow small review to multiprocess concepts :P angel !!
