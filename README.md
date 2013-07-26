@@ -29,7 +29,7 @@ Good night !!!
 Bis morgen !! Angel. 
 
 --------------
-Tuesday
+Thursday
 
 Multiprocess application added to client.py.
 
