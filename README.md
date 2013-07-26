@@ -34,3 +34,12 @@ Thursday
 Multiprocess application added to client.py.
 
 Tomorrow small review to multiprocess concepts :P angel !!
+
+--------------------
+
+Friday
+
+Lambda function fix added for windows !!
+Good weekend ! 
+
+
