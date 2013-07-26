@@ -28,12 +28,13 @@ class Client(object):
     def __init__(self, cwd=os.getcwd(), mutex=None):
         self.working_directory = cwd
         ''' creating current file list '''
-
-        ''' Lambda functions '''
-        self.file_path = lambda a, b: os.path.join(a, b)
         self.current_files = self.getDictionary()
         self.scanned_files = {}
         self.mutex = mutex
+
+    """ Fix for windows : lambda functions are not able to be changed adding """
+    def filePath(self, ):
+        return os.path.join(a, b)
 
     def run(self, queue=None, interval=1):
         if not queue:
@@ -62,7 +63,7 @@ class Client(object):
         """ return the list of current files """
         fileList = []
         root = self.working_directory
-        fileList = [self.file_path(root, filex) for (root, dirs, files) in os.walk(root) for filex in files]
+        fileList = [self.filePath(root, filex) for (root, dirs, files) in os.walk(root) for filex in files]
         return fileList
 
     def getDictionary(self):
