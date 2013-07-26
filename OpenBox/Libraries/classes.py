@@ -90,12 +90,25 @@ class Client(object):
             return []
         ''' using sha256 '''
         hasher = hashlib.sha256()
-        filex = open(filename, "rb")
+        try:
+            filex = open(filename, "rb")
+        except IOError:
+            with self.mutex:
+                print "FileName: {0} not available".format(filename)
+                return ""  # returning nothing because the checksum was not able to be calculated
+
         while True:
-            byteCode = filex.read(2**20)
+            try:
+                byteCode = filex.read(2**20)
+            except IOError:
+                with self.mutex:
+                    print "Unable to continue reading file {0}".format(filename)
+                    return ""
+
             if not byteCode:
                 break
             hasher.update(byteCode)
+
         filex.close()
         return hasher.digest()
 
