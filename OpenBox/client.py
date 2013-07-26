@@ -7,7 +7,7 @@ from optparse import OptionParser
 import time  # has time utilities
 import multiprocessing  # has multiple input
 
-''' Custom Exceptions '''
+''' Custom Exceptions  '''
 
 
 class ClientExceptions(Exception):
@@ -15,12 +15,32 @@ class ClientExceptions(Exception):
     def __init__(self, code, value="Unknown issue"):
         ''' overloading first exception '''
         error_dict = {
-            "Queue": "No queue provided to send data fatal error"
+            "Queue": "No queue provided to send data fatal error",
+            "Arguments": ":( Sorry unable to process your arguments , python client.py help for details",
+            "Invalid Arguments": "Please verify the type of your arguments !!"
         }
         self.value = error_dict[code]
 
     def __str__(self):
         return repr(self.value)  # returns the canonical string representation of the object
+
+
+def getParse():
+    options = {}
+    arguments = []
+    parser = OptionParser()
+    parser.add_option("-d", "--directory", metavar="DIRECTORY",
+                      default=os.getcwd(), help="Directory to monitor!!", dest="directory")
+    parser.add_option("-t", "--interval", metavar="INTERVAL",
+                      default=1, help="Time interval to scan the working directory", dest="interval")
+    try:
+        (options, argumets) = parser.parse_args()
+        options.interval = int(options.interval)
+
+    except:
+        print "Unable to handle arguments !!!"
+        raise ClientException("Arguments")
+    return options, arguments
 
 
 class Client(object):
@@ -33,7 +53,7 @@ class Client(object):
         self.mutex = mutex
 
     """ Fix for windows : lambda functions are not able to be changed adding """
-    def filePath(self, ):
+    def filePath(self, a, b):
         return os.path.join(a, b)
 
     def run(self, queue=None, interval=1):
@@ -92,10 +112,35 @@ class Client(object):
         return hasher.digest()
 
 
+def validateArguments(directory, interval):
+    """ validates arguments types and if directory exists """
+    if not (isinstance(directory, str) and isinstance(interval, int)):
+        print "Instance of different types"
+        return False
+    if not os.path.exists(directory):
+        print "No directory Found"
+        return False
+    return True
+
+
 def main():
+    """ Client Application for a folder monitor """
+    ''' Parsing arguments from command line , there are two arguments
+        a) directory : must be a directory like example c:\\
+        b) interval : the interval must be the number of seconds
+
+        example:
+            python client.py --directory="C:\Users\UserName\OpenDrop" --interval=2
+    '''
+    (options, arguments) = getParse()
+
+    if not validateArguments(options.directory, options.interval):
+        raise ClientException("Invalid Arguments")
+
+    ''' Creating multiprocess elements '''
     mutex = multiprocessing.Lock()
     queue = multiprocessing.Queue()
-    OpenDrop = Client(cwd="/Users/leofigy/repositories/PythonCinvestav/basics", mutex=mutex)
+    OpenDrop = Client(cwd=options.directory, mutex=mutex)
     interval = 1
     ''' moving all solutions to multiple processes '''
 
@@ -103,7 +148,7 @@ def main():
               Monitoring Folder: {0} :""".format(OpenDrop.working_directory)
 
     ''' Preparing all processes '''
-    scan = multiprocessing.Process(target=OpenDrop.run, args=(queue, interval,))
+    scan = multiprocessing.Process(target=OpenDrop.run, args=(queue, options.interval,))
     saver = multiprocessing.Process(target=OpenDrop.saveData, args=(queue,))
     scan.start()
     saver.start()
