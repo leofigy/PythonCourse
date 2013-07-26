@@ -3,19 +3,19 @@ import sys
 import hashlib
 from optparse import OptionParser
 
-""" Adding process libraries """
+''' Adding process libraries '''
 import time  # has time utilities
 import multiprocessing  # has multiple input
 
-""" Custom Exceptions """
+''' Custom Exceptions '''
 
 
 class ClientExceptions(Exception):
-    # exceptions for client
+    """ Known exceptions for client app """
     def __init__(self, code, value="Unknown issue"):
-        """ overloading first exception """
+        ''' overloading first exception '''
         error_dict = {
-            1: "No channel provided to send data fatal error"
+            "Queue": "No queue provided to send data fatal error"
         }
         self.value = error_dict[code]
 
@@ -23,31 +23,29 @@ class ClientExceptions(Exception):
         return repr(self.value)  # returns the canonical string representation of the object
 
 
-class client(object):
+class Client(object):
+    """ Class client for our application """
+    def __init__(self, cwd=os.getcwd(), mutex=None):
+        self.working_directory = cwd
+        ''' creating current file list '''
 
-    def __init__(self,
-                 cwd=os.getcwd(),
-                 mutex=None):
-        self.workingDirectory = cwd
-        """ creating current file list """
-
-        """ Lambda functions """
-        self.filePath = lambda a, b: os.path.join(a, b)
-        self.FileInformation = self.getDictionary()
-        self.Temporal = {}
+        ''' Lambda functions '''
+        self.file_path = lambda a, b: os.path.join(a, b)
+        self.current_files = self.getDictionary()
+        self.scanned_files = {}
         self.mutex = mutex
 
     def run(self, queue=None, interval=1):
         if not queue:
-            raise ClientExceptions(1)
-        """ starting to run function """
+            raise ClientExceptions("Queue")
+        ''' starting to run function '''
         while True:
-            """<<<< Here goes your solution >>>>"""
-            self.Temporal = self.getDictionary()
-            if not self.FileInformation == self.Temporal:
-                """ processing operations """
+            '''<<<< Here goes your solution >>>>'''
+            self.scanned_files = self.getDictionary()
+            if not self.current_files == self.scanned_files:
+                ''' processing operations '''
                 with self.mutex:
-                    print "Generador", len(self.Temporal.keys())
+                    print "Generador", len(self.scanned_files.keys())
 
                 # sending operation to saver function
                 queue.put(True)
@@ -58,16 +56,17 @@ class client(object):
         while True:
             if queue.get():
                 with self.mutex:
-                    print len(self.FileInformation.keys())
+                    print len(self.current_files.keys())
 
     def getFiles(self):
         """ return the list of current files """
         fileList = []
-        root = self.workingDirectory
-        fileList = [self.filePath(root, filex) for (root, dirs, files) in os.walk(root) for filex in files]
+        root = self.working_directory
+        fileList = [self.file_path(root, filex) for (root, dirs, files) in os.walk(root) for filex in files]
         return fileList
 
     def getDictionary(self):
+        """ returns a dictionary with {"filename": "checksum"} format """
         files = self.getFiles()
         dictionary = {}
         fileAndHashes = []
@@ -77,9 +76,10 @@ class client(object):
         return dictionary
 
     def getChecksum(self, filename):
+        """ returns the checksum using hashlib """
         if not filename:
             return []
-        """ using sha256 """
+        ''' using sha256 '''
         hasher = hashlib.sha256()
         filex = open(filename, "rb")
         while True:
@@ -94,18 +94,20 @@ class client(object):
 def main():
     mutex = multiprocessing.Lock()
     queue = multiprocessing.Queue()
-    OpenDrop = client(cwd="/Users/leofigy/repositories/PythonCinvestav/basics", mutex=mutex)
+    OpenDrop = Client(cwd="/Users/leofigy/repositories/PythonCinvestav/basics", mutex=mutex)
     interval = 1
-    """ moving all solutions to multiple processes """
+    ''' moving all solutions to multiple processes '''
 
     message = """ ================ Welcome to OpenDrop Client ================= \n \
-              Monitoring Folder: {0} :""".format(OpenDrop.workingDirectory)
+              Monitoring Folder: {0} :""".format(OpenDrop.working_directory)
 
-    """ Preparing all processes """
+    ''' Preparing all processes '''
     scan = multiprocessing.Process(target=OpenDrop.run, args=(queue, interval,))
     saver = multiprocessing.Process(target=OpenDrop.saveData, args=(queue,))
     scan.start()
     saver.start()
+    #scan.join()
+    #scan.join()
 
     print message
     while True:
@@ -123,9 +125,9 @@ if '__main__' == __name__:
     sys.exit(0)
 
 
-""" NOTES """
+''' NOTES '''
 
-""" Python classes format
+''' Python classes format
 
     notes : self it is the referene to the same instance
 
@@ -137,4 +139,4 @@ if '__main__' == __name__:
         def method_name(self, paramters):
             'method function etc ...'
 
-"""
+'''
