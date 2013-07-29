@@ -1,0 +1,16 @@
+1) On windows download git for windows 
+2) http://msysgit.github.io/
+3) open git bash
+4) generate your own ssh key
+ssh-keygen -t rsa -C "your_email@example.com"
+Enter passphrase (empty for no passphrase): [Type a passphrase]
+# Enter same passphrase again: [Type passphrase again]
+Your identification has been saved in /Users/you/.ssh/id_rsa.
+# Your public key has been saved in /Users/you/.ssh/id_rsa.pub.
+
+# The key fingerprint is:
+# 01:0f:f4:3b:ca:85:d6:17:a1:7d:f0:68:9d:f0:a2:db your_email@example.com
+
+6) add the key to the server (please ask angel about the address and user)
+
+cat .ssh/id_rsa.pub | ssh user@123.45.56.78 "cat >> ~/.ssh/authorized_keys"
