@@ -24,7 +24,7 @@ class NetClient(object):
 def main():
     print "Welcome to the client !!!"
     #192.241.130.232
-    client = NetClient(host=gethostname())
+    client = NetClient(host="192.241.130.232")
     client.__run__()
 
 
