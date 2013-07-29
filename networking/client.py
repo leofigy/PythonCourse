@@ -17,7 +17,10 @@ class NetClient(object):
             message = raw_input("Introduce a message or quit to exit: ")
             if message.lower() == "quit":
                 break
-            self.socket.send(message)
+            try:
+                self.socket.send(message)
+            except socket.error:
+                print "Unable to send information"
         self.socket.close()
 
 
