@@ -34,7 +34,7 @@ class Netserver(object):
 
 def main():
     print "Welcome to remote server {0}".format(gethostname())  # gethostname is inside socket module
-    server = Netserver(host=gethostname())
+    server = Netserver()
     server.__run__()
 
 if __name__ == '__main__':
