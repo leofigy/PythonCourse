@@ -15,11 +15,16 @@ class Netserver(object):
     def clientHandling(self, connection, size=1024):
         data = None
         while True:
-            connection.send(self.message)
+            try:
+                connection.send(self.message)
+            except:
+                print "Unable to send information to client"
+
             try:
                 data = connection.recv(size)
             except:
                 print "----> User left !!"
+                connection.close()
                 break
             print data
 
@@ -28,7 +33,6 @@ class Netserver(object):
         while True:
             connection, address = self.socket.accept()
             thread.start_new_thread(self.clientHandling, (connection,))
-        connnection.close()
         self.socket.close()
 
 
