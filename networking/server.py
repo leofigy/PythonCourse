@@ -6,7 +6,7 @@ import sys
 
 
 class Netserver(object):
-    def __init__(self, host='', port=1500, clients=5, message='''Hi there !!! I'm python server'''):
+    def __init__(self, host='', port=5000, clients=5, message='''Hi there !!! I'm python server'''):
         self.socket = socket()
         self.socket.bind((host, port))
         self.socket.listen(clients)  # The number of clients to be queued

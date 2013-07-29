@@ -4,7 +4,7 @@ import sys
 
 
 class NetClient(object):
-    def __init__(self, host='', port=1500, size=1024):
+    def __init__(self, host='', port=5000, size=1024):
         self.socket = socket()
         self.port = port
         self.socket.connect((host, port))  # Tuple to connect to server
@@ -24,7 +24,7 @@ class NetClient(object):
 def main():
     print "Welcome to the client !!!"
     #192.241.130.232
-    client = NetClient(host="192.241.130.232")
+    client = NetClient(host='192.241.130.232')
     client.__run__()
 
 
