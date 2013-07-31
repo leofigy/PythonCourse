@@ -12,8 +12,7 @@ class NetClient(object):
 
     def __run__(self):
         while True:
-            data = self.socket.recv(self.size)
-            print data
+            
             message = raw_input("Introduce a message or quit to exit: ")
             if message.lower() == "quit":
                 break
@@ -21,13 +20,19 @@ class NetClient(object):
                 self.socket.send(message)
             except socket.error:
                 print "Unable to send information"
+            try:
+                data = self.socket.recv(self.size)
+            except:
+                print "confirmation missed"
+                break
+            print "server: {0}".format(data)
         self.socket.close()
 
 
 def main():
     print "Welcome to the client !!!"
     #192.241.130.232
-    client = NetClient(host='192.241.130.232')
+    client = NetClient('192.241.130.232')
     client.__run__()
 
 
