@@ -8,7 +8,6 @@ class MyDecorator(object):
 		print "============= DECORATOR CALL FUNCTION ============="
 		self.decorated(x, y)
 		print "============= ENDING CALL ========================="
-
 @MyDecorator
 def normal_function(x, y):
 	print "result:",x*y
